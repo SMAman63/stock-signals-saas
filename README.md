@@ -44,7 +44,7 @@ A complete SaaS platform for stock trading signals with user authentication, Str
 ### Backend Setup
 
 ```bash
-cd stock-signals-backend
+cd backend
 
 # Create virtual environment
 python -m venv venv
@@ -65,7 +65,7 @@ uvicorn app.main:app --reload
 ### Frontend Setup
 
 ```bash
-cd stock-signals-frontend
+cd frontend
 npm install
 npm run dev
 ```
@@ -121,7 +121,7 @@ RAZORPAY_PLAN_AMOUNT=49900  # ₹499 in paise
 ### Run Backend Tests
 
 ```bash
-cd stock-signals-backend
+cd backend
 pytest -v
 ```
 
@@ -148,16 +148,40 @@ Set `PAYMENT_GATEWAY` in `.env` to choose the default.
 
 ```
 stock-signals-saas/
-├── stock-signals-backend/
+├── backend/
 │   ├── app/
+│   │   ├── middleware/         # Rate limiting
+│   │   ├── models/             # SQLAlchemy models
+│   │   ├── routers/
+│   │   │   ├── auth.py         # Authentication endpoints
+│   │   │   ├── billing.py      # Dual gateway support
+│   │   │   └── signals.py      # Trading signals
+│   │   ├── schemas/            # Pydantic schemas
 │   │   ├── services/
+│   │   │   ├── auth.py         # Auth service
 │   │   │   ├── stripe_service.py
-│   │   │   └── razorpay_service.py
-│   │   └── routers/billing.py  # Dual gateway support
+│   │   │   ├── razorpay_service.py
+│   │   │   └── redis_service.py
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   └── main.py
+│   ├── tests/
 │   └── requirements.txt
 │
-└── stock-signals-frontend/
-    └── src/pages/Dashboard.jsx  # Both payment options
+├── frontend/
+│   ├── src/
+│   │   ├── api/                # API client
+│   │   ├── components/         # Reusable components
+│   │   ├── pages/
+│   │   │   ├── Dashboard.jsx   # Both payment options
+│   │   │   ├── Login.jsx
+│   │   │   └── Signup.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+│
+├── README.md
+└── DEPLOYMENT.md
 ```
 
 ## 📝 License
